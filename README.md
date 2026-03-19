@@ -2,7 +2,7 @@
 
 # Dopamine
 
-=== ATTENTION! ===
+=== ATTENTION! === <br>
 Before using this repository - go and star original Dopamine because without it this project wouldnt be possible.
 
 This repo was forked from the commit: [2cfd690ac07d35eef62f42396a9989441a47b768](https://github.com/opa334/Dopamine/commit/2cfd690ac07d35eef62f42396a9989441a47b768) so it includes spinlock fix. No bootlogos at the moment though.
@@ -13,9 +13,9 @@ Please note that all issues related to version support will be deleted without r
 
 Official website / download: https://ellekit.space/dopamine/
 
-#############
-====BUILD====
-#############
+############# <br>
+====BUILD==== <br>
+############# <br>
 
 - [!] THEOS MUST BE INSTALLED!!!
 
