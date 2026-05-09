@@ -20,6 +20,32 @@ Please note, that this project is experimantal and:<br>
 
 If I will see any malicious activity with the patterns of my code used in bootstrapfs, APFSRW, Makerw, Dopamine_Rootful and Fugu15_Rootful (one love) I will immediately report it on github or on the platform where I saw it. This project **DOES NOT** contain malware. The ownere of the device can do whatever he wants with it, however - the apple guarantee can be vanished after jailbreaking. But what I would say about it - devices on ios 15 are already out-of-guarantee in most cases due to their age, but I would not recommend installing this on main or production device unless you need to fully protect your device from coruna exploit chain.
 
+
+
+**LEGAL NOTICE**
+1. Purpose: Studying iOS architecture, kernel
+protection mechanisms, and implementing
+"rootful" access concepts for legitimate
+device owners.<br>
+2. Non-Malicious Use: This software is NOT
+designed to gain unauthorized access to
+third-party data, bypass digital rights
+management (DRM), or perform any illegal
+activities. <br>
+3. No Warranty: The software is provided
+**"as is"**, without warranty of any kind. The author
+shall not be liable for any claims, damages,
+or other liability arising from the use of this
+source code.
+4. Compliance: Users are responsible for
+complying with their local laws. This project
+is a Proof of Concept (PoC) and requires
+manual compilation by the user.
+
+
+
+
+
 Official website / download: https://ellekit.space/dopamine/
 
 ############# <br>
