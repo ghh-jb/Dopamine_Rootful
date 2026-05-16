@@ -55,71 +55,41 @@ void printf_success(char* format, ...) {
     return;
 }
 
-char* walkPartitions(char* volumeNameIn) {
-    char device[256] = "/dev/";
-    bool foundPartition = false;
+#import <Foundation/Foundation.h>
+#import <stdio.h>
+#import <string.h>
+#import <stdbool.h>
+#import <stdlib.h>
 
-    char* partitions[17];
-
+char* walkPartitions(const char* volumeNameIn) {
+    if (!volumeNameIn) return NULL;
+    const char* devicveSample = "disk0s1s%d";
     if (@available(iOS 16.0, *)) {
-        
-        partitions[0] = "disk1s1";
-        partitions[1] = "disk1s2";
-        partitions[2] = "disk1s3";
-        partitions[3] = "disk1s4";
-        partitions[4] = "disk1s5";
-        partitions[5] = "disk1s6";
-        partitions[6] = "disk1s7";
-        partitions[7] = "disk1s8";
-        partitions[8] = "disk1s9";
-        partitions[9] = "disk1s10";
-        partitions[10] = "disk1s11";
-        partitions[11] = "disk1s12";
-        partitions[12] = "disk1s13";
-        partitions[13] = "disk1s14";
-        partitions[14] = "disk1s15";
-        partitions[15] = "disk1s16";
-        partitions[16] = "disk1s17";
-
-    } else {
-        partitions[0] = "disk0s1s1";
-        partitions[1] = "disk0s1s2";
-        partitions[2] = "disk0s1s3";
-        partitions[3] = "disk0s1s4";
-        partitions[4] = "disk0s1s5";
-        partitions[5] = "disk0s1s6";
-        partitions[6] = "disk0s1s7";
-        partitions[7] = "disk0s1s8";
-        partitions[8] = "disk0s1s9";
-        partitions[9] = "disk0s1s10";
-        partitions[10] = "disk0s1s11";
-        partitions[11] = "disk0s1s12";
-        partitions[12] = "disk0s1s13";
-        partitions[13] = "disk0s1s14";
-        partitions[14] = "disk0s1s15";
-        partitions[15] = "disk0s1s16";
-        partitions[16] = "disk0s1s17";
+        devicveSample = "disk1s%d";
     }
-    
-    for (int part = 0; part < 17; part++) {
-        char* volumeName = getName(partitions[part]);
+    for (int partNum = 1; ; partNum++) {
+        char currentPartition[64];
+        snprintf(currentPartition, sizeof(currentPartition), devicveSample, partNum);
+        char* volumeName = getName(currentPartition);
         if (!volumeName) {
             debug("Reached the end of volumes, exiting\n");
-            return "";
+            break; 
         }
-        printf("%s -> %s\n", partitions[part], volumeName);
-
+        printf("%s -> %s\n", currentPartition, volumeName);
         if (strcmp(volumeNameIn, volumeName) == 0) {
-            strcat(device, partitions[part]);
+            char* device = malloc(256);
+            if (!device) {
+                printf_error("[-] FAIL: failed to allocate memory at device detection.");
+                exit(-1);
+            }
+            snprintf(device, 256, "/dev/%s", currentPartition);
             debug("Found partition: %s\n", device);
-            foundPartition = true;
-            char* ptr = device;
-            return ptr;
+            return device; 
         }
     }
-    debug("FAIL: something went wrong\n");
     return "";
 }
+
 
 bool check_partition(char* path) {
     char path_internal[512] = {0};

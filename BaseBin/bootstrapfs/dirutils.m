@@ -16,7 +16,7 @@
 #include <sys/param.h>
 #include <mach/arm/kern_return.h>
 
-#define DEBUG_BUILD 0
+#define DEBUG_BUILD 1
 
 void debug(char *format, ...) {
     if (!DEBUG_BUILD) return;
