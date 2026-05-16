@@ -17,15 +17,14 @@ int64_t (*_APFSVolumeCreate)(char* device, CFMutableDictionaryRef args);
 uint64_t (*_APFSVolumeDelete)(char* arg1);
 uint64_t credBackup_local = 0;
 
-
-
 // main apfs mount function
 int mount_apfs(const char *dir, int flags, char *device) {
-	apfs_mount_args_t args = 
+	apfs_mount_args_t args =
 	{
-		device, // /dev/disk0s1s8
-		flags, // MNT_FORCE MNT_RDONLY MNT_UPDATE etc
-		APFS_MOUNT_FILESYSTEM, // default
+		device,
+		// /dev/disk0s1s{X} on iOS 15.X and /dev/disk1s{X} on 16.X and MacOS
+		flags, // MNT_FORCE, MNT_ROOTFS, MNT_NOSUID and others
+		APFS_MOUNT_FILESYSTEM, // mount liveF
 		0,
 		0,
 		{ "" },
@@ -56,6 +55,7 @@ int mount_apfs(const char *dir, int flags, char *device) {
 // Utility function to create apfs devices
 int initialize_calls(void) {
 	void* APFSHandler = dlopen("/System/Library/PrivateFrameworks/APFS.framework/APFS", RTLD_NOW);
+	// TODO: maybe add MacOS support?
 	if (!APFSHandler) {
 		printf("[-] FAIL: unable to dlopen APFS, cannot continue\n");
 		dlclose(APFSHandler);
@@ -66,7 +66,7 @@ int initialize_calls(void) {
 	dlclose(APFSHandler);
 
 	debug("APFS calls initialized:\nAPFSVolumeCreate: %p\nAPFSVolumeDelete: %p\n", _APFSVolumeCreate, _APFSVolumeDelete);
-	
+
 	void* LJBHandler = dlopen(getItemInJBROOT("/basebin/libjailbreak.dylib"), RTLD_NOW);
 	if (!LJBHandler) {
 		printf("[-] FAIL: unable to dlopen libjailbreak, cannot continue");
@@ -76,14 +76,14 @@ int initialize_calls(void) {
 	jbclient_root_steal_ucred = dlsym(LJBHandler, "jbclient_root_steal_ucred");
 	dlclose(LJBHandler);
 	debug("libjailbreak calls initialized:\njbclient_root_steal_ucred: %p\n", jbclient_root_steal_ucred);
-	
+
 	return 0;
 }
 
-
 // Utility function to get name of device
 // Pass only disk0s1s8 (without /dev)
-// For example: disk0s1s7 -> Preboot; /dev/disk0s1s1 -> System
+// For example: disk0s1s7 -> Preboot; disk0s1s1 -> System
+// Note: disk0s1s{X} on iOS 15 and earlier and disk1s{X} on iOS 16 and MacOS
 char* getName(char* volume) {
 	if (!volume) {
 		debug("FAULT in volume name\n");
@@ -99,7 +99,6 @@ char* getName(char* volume) {
 		debug("FAULT in getName in IOServiceGetMatchingServices\n");
 		return "";
 	}
-
 	io_object_t service = IOIteratorNext(iter);
 	NSString* result = nil;
 

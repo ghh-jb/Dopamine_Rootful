@@ -16,7 +16,7 @@
 #include <sys/param.h>
 #include <mach/arm/kern_return.h>
 
-#define DEBUG_BUILD 1
+#define DEBUG_BUILD 0
 
 void debug(char *format, ...) {
     if (!DEBUG_BUILD) return;
@@ -29,7 +29,6 @@ void debug(char *format, ...) {
 }
 
 // Some functions useful for directories manipulation
-
 char* toRealpath(const char *path) {
     char targetPath[PATH_MAX];
     char absPath[PATH_MAX];
@@ -197,6 +196,7 @@ kern_return_t copy_dir_recursive(const char *src, const char *dst) {
     return 0;
 }
 
+// Dynamically patchfind jbroot path without use of opa334's libroot
 char* jbrootpath() {
     NSString* preboot = @"/private/preboot/";
     NSArray* dirs = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:preboot error:NULL];
@@ -220,7 +220,7 @@ char* jbrootpath() {
     }
     return "";
 }
-
+// Get any item in the jbroot
 char* getItemInJBROOT(char* item) {
     char* jbroot = jbrootpath();
     strcat(jbroot, item);

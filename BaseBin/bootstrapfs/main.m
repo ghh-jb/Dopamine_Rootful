@@ -1,6 +1,6 @@
 //
 //  main.m
-//  makerw.apfs
+//  makerw_apfs
 //
 //  Created by untether
 //
@@ -25,23 +25,15 @@
 #include <sys/param.h>
 #include "apfs_utils.h"
 
-
 /*
 Idea:
 1) Create new APFS partition
 2) Mount it to /var/mnt/<name_of_volume>/
 3) Copy staff recursively from provided path to /var/mnt/<name_of_volume>/
-Note: name_of_volume should be the same as provided path
 4) Unmount /var/mnt/<name_of_volume>/
 5) Mount partition over provided path
 Profit?
 */
-
-int (*jbclient_root_steal_ucred)(uint64_t ucredToSteal, uint64_t *orgUcred);
-int64_t (*_APFSVolumeCreate)(char* device, CFMutableDictionaryRef args);
-uint64_t (*_APFSVolumeDelete)(char* device);
-
-
 
 void printf_error(char *format, ...) {
     printf("\x1b[1;31m");
@@ -62,7 +54,6 @@ void printf_success(char* format, ...) {
     printf("\x1b[0m");
     return;
 }
-
 
 char* walkPartitions(char* volumeNameIn) {
     char device[256] = "/dev/";
@@ -229,7 +220,7 @@ int create_apfs_partition(char* path, char* volumeNameIn) {
             printf("[+] unmount ret %i\n", ret);
 
             ret = _APFSVolumeDelete(device);
-            printf("[+] volume %s deleted, creating\n", device);
+            printf("[+] volume %s deleted, recreating\n", device);
             goto start;
         }
 
@@ -248,12 +239,14 @@ int create_apfs_partition(char* path, char* volumeNameIn) {
 
 
         int partitionPrepared = prepare_dopamine_partition(path, volumeNameIn);
-        // at this point we have a new empty APFS device in /dev. The strategy is:
-        // 1. Mount it over /var/mnt/<path>
-        // 2. Copy all from real <path> to /var/mnt/<path>
-        // 3. unmount /var/mnt/<path>
+        // 0. At this point we have a new empty APFS device in /dev. The strategy is:
+        // 1. Mount it over /var/mnt/<volumeNameIn>
+        // 2. Copy all from real <path> to /var/mnt/<volumeNameIn>
+        // 3. unmount /var/mnt/<volumeNameIn>
         // 4. mount over real <path>
-        printf("partition prepared for %s, unmounting tempdir\n", volumeNameIn);
+
+        // Do it right now
+        printf("Partition prepared for %s, unmounting tempdir\n", volumeNameIn);
         char tempMount[256] = "/var/mnt/";
         strcat(tempMount, volumeNameIn);
 
@@ -278,8 +271,6 @@ int main(int argc, char *argv[]) {
 
     int calls = initialize_calls();
     debug("Calls initialized ret %i\n", calls);
-    // int ret = create_apfs_partition("/usr", "Usr");
-
     
     if (argc < 2) {
         printf_success("Usage:\n");
@@ -312,5 +303,3 @@ int main(int argc, char *argv[]) {
 
     return ret;
 }
-
-
