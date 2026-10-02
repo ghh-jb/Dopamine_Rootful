@@ -224,7 +224,19 @@ int systemwide_process_checkin(audit_token_t *processToken, char **rootPathOut, 
 		sandbox_extension_issue_file_to_process("com.apple.sandbox.executable", JBROOT_PATH(""), 0, *processToken),
 
 		// Make /var/jb/var/mobile writable
-		sandbox_extension_issue_file_to_process("com.apple.app-sandbox.read-write", JBROOT_PATH("/var/mobile"), 0, *processToken),
+		// sandbox_extension_issue_file_to_process("com.apple.app-sandbox.read-write", JBROOT_PATH("/var/mobile"), 0, *processToken),
+
+		sandbox_extension_issue_file_to_process("com.apple.app-sandbox.read-write", "/private/var/mobile", 0, *processToken),
+		sandbox_extension_issue_file_to_process("com.apple.app-sandbox.read-write", "/private/var/mobile/Library/Preferences", 0, *processToken),
+		sandbox_extension_issue_file_to_process("com.apple.app-sandbox.read-write", "/Library", 0, *processToken),
+		sandbox_extension_issue_file_to_process("com.apple.sandbox.executable", "/Library", 0, *processToken),
+		sandbox_extension_issue_file_to_process("com.apple.sandbox.executable", "/usr/lib", 0, *processToken),
+		sandbox_extension_issue_file_to_process("com.apple.app-sandbox.read-write", "/usr/lib", 0, *processToken),
+        sandbox_extension_issue_file_to_process("com.apple.app-sandbox.read-write", "/private/var/mobile/Library", 0, *processToken),
+        sandbox_extension_issue_file_to_process("com.apple.app-sandbox.read-write", "/private/var/mobile/Documents", 0, *processToken),
+        sandbox_extension_issue_file_to_process("com.apple.app-sandbox.read-write", "/private/var/mnt", 0, *processToken),
+        sandbox_extension_issue_file_to_process("com.apple.app-sandbox.read-write", "/private/var/db", 0, *processToken),
+        sandbox_extension_issue_file_to_process("com.apple.app-sandbox.read-write", "/private/var/stash", 0, *processToken),
 	};
 	int sandboxExtensionsCount = sizeof(sandboxExtensionsArr) / sizeof(char *);
 	*sandboxExtensionsOut = combine_strings('|', sandboxExtensionsArr, sandboxExtensionsCount);
