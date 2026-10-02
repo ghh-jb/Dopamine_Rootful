@@ -67,6 +67,10 @@ idownloadd: .build .include libjailbreak
 	$(MAKE) -C idownloadd
 	@cp idownloadd/idownloadd .build
 
+bootstrapfs: .build .include libjailbreak
+	$(MAKE) -C bootstrapfs
+	@cp bootstrapfs/.theos/obj/debug/bootstrapfs .build
+
 watchdoghook: .build .include libjailbreak
 	$(MAKE) -C watchdoghook
 	@cp watchdoghook/watchdoghook.dylib .build
@@ -122,6 +126,7 @@ clean:
 	@$(MAKE) -C watchdoghook $@
 	@$(MAKE) -C rootlesshooks $@
 	@$(MAKE) -C dyldhook $@
+	@$(MAKE) -C bootstrapfs $@
 	@$(MAKE) -C dopamine $@
 	@$(MAKE) -C hookd $@
 	@rm -rf .build
