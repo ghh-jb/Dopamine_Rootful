@@ -174,6 +174,30 @@ int systemwide_trust_file_by_path(const char *path)
 	return r;
 }
 
+
+int ptrauth_disable(uint64_t proc, char* procPath) {
+	if (proc) {
+        uint64_t task = proc_task(proc);
+        if (kread8(task + 0x348) == false) {
+            uint64_t vm_map = kread_ptr(task + koffsetof(task, map));
+            uint64_t pmap = kread_ptr(vm_map + koffsetof(vm_map, pmap));
+            
+            kwrite64(pmap + 0xC4, 0x0101010101010101);
+            physwrite8(kvtophys(pmap + koffsetof(pmap, type)), 0);
+
+            kwrite32(task + 0x348, true); // task disable_user_jop
+            
+            uint32_t old_flags = kread32(kread_ptr(task + koffsetof(task, threads)) + 0x15E);
+            
+            uint32_t new_flags = old_flags | 1;
+            
+            kwrite8(kread_ptr(task + koffsetof(task, threads)) + 0x15E, new_flags);
+            // kwrite32(kread_ptr(task + 0x60) + 0x15C, true); // old
+        }
+    }
+    return 0;
+}
+
 int systemwide_process_checkin(audit_token_t *processToken, char **rootPathOut, char **bootUUIDOut, char **sandboxExtensionsOut, bool *fullyDebuggedOut, bool *forceCSAdhocOut)
 {
 	// Fetch process info
@@ -225,7 +249,14 @@ int systemwide_process_checkin(audit_token_t *processToken, char **rootPathOut, 
 	// Allow invalid pages
 	cs_allow_invalid(proc, fullyDebugged);
 
-	// Fix setuid
+
+	#ifdef __arm64e__
+	if (strstr(procPath, "xpcproxy") == NULL) {
+		ptrauth_disable(proc, procPath);
+	}
+	#endif
+
+	// Fix setuid 
 	struct stat sb;
 	if (stat(procPath, &sb) == 0) {
 		if (S_ISREG(sb.st_mode) && (sb.st_mode & (S_ISUID | S_ISGID))) {
