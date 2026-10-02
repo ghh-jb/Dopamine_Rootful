@@ -73,9 +73,10 @@ int protection_set_active(bool active)
 
 bool fakelib_is_mounted(void)
 {
-	struct statfs fsb;
-    if (statfs("/usr/lib", &fsb) != 0) return NO;
-    return strcmp(fsb.f_mntonname, "/usr/lib") == 0;
+	// struct statfs fsb;
+    // if (statfs("/usr/lib", &fsb) != 0) return NO;
+    // return strcmp(fsb.f_mntonname, "/usr/lib") == 0;
+    return false;
 }
 
 int fakelib_set_mounted(bool mounted)
