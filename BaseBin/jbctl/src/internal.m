@@ -90,6 +90,30 @@ int fakelib_set_mounted(bool mounted)
 			r = unmount_unsandboxed("/usr/lib", MNT_FORCE);
 		}
 	}
+	// idea:
+	// 0) Load trustcache into the kernel
+	// 1) Mount directories in / as RW
+	// 2) Required directories for rootful jailbreak:
+	//		/sbin
+	//		/bin
+	//		/Library
+	//		/private/etc
+	//		/Applications
+	execute_unsandboxed(^{
+		int ret;
+		NSLog(@"[mount] Using APFS method");
+
+		ret = exec_cmd(JBROOT_PATH("/basebin/bootstrapfs"), "create", "/usr", "Usr", NULL); // /usr
+		ret = exec_cmd(JBROOT_PATH("/basebin/bootstrapfs"), "create", "/Library", "Library", NULL); // /Library
+		ret = exec_cmd(JBROOT_PATH("/basebin/bootstrapfs"), "create", "/Applications", "Applications", NULL); // /Applications
+		ret = exec_cmd(JBROOT_PATH("/basebin/bootstrapfs"), "create", "/private/etc", "Etc",  NULL); // /private/etc
+		ret = exec_cmd(JBROOT_PATH("/basebin/bootstrapfs"), "create", "/sbin", "Sbin",  NULL); // /sbin
+		ret = exec_cmd(JBROOT_PATH("/basebin/bootstrapfs"), "create", "/bin", "Bin", NULL); // /bin
+		NSLog(@"[mount:end] returned: %i", ret);
+		NSLog(@"[mount] MOUNTED!");
+		sleep(1);
+	});
+	
 	return r;
 }
 
