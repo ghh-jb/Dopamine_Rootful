@@ -18,7 +18,7 @@
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		// Ensure jailbreak apps are readded to icon cache after the system reloads it
 		// A bit hacky, but works
-		const char *uicachePath = JBROOT_PATH_CSTRING("/usr/bin/uicache");
+		const char *uicachePath = "/usr/bin/uicache";
 		if (!access(uicachePath, F_OK)) {
 			exec_cmd(uicachePath, "-a", NULL);
 		}
