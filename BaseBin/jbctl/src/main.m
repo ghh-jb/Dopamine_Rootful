@@ -142,7 +142,7 @@ int main(int argc, char* argv[])
 		}
 	}
 	else if (!strcmp(cmd, "reboot_userspace")) {
-		// return reboot3(RB2_USERREBOOT);
+		return reboot3(RB2_USERREBOOT);
 		return 0;
 	}
 	else if (!strcmp(cmd, "respring")) {
