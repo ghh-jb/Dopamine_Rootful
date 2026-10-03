@@ -318,15 +318,15 @@ NSString *const bootstrapErrorDomain = @"BootstrapErrorDomain";
             @"/var/master.passwd"
         ];
         
-        for (NSString *xinaLeftoverSymlink in xinaLeftoverSymlinks) {
-            [self deleteSymlinkAtPath:xinaLeftoverSymlink error:nil];
-        }
+        // for (NSString *xinaLeftoverSymlink in xinaLeftoverSymlinks) {
+        //     [self deleteSymlinkAtPath:xinaLeftoverSymlink error:nil];
+        // }
         
-        for (NSString *xinaLeftoverFile in xinaLeftoverFiles) {
-            if ([[NSFileManager defaultManager] fileExistsAtPath:xinaLeftoverFile]) {
-                [[NSFileManager defaultManager] removeItemAtPath:xinaLeftoverFile error:nil];
-            }
-        }
+        // for (NSString *xinaLeftoverFile in xinaLeftoverFiles) {
+        //     if ([[NSFileManager defaultManager] fileExistsAtPath:xinaLeftoverFile]) {
+        //         [[NSFileManager defaultManager] removeItemAtPath:xinaLeftoverFile error:nil];
+        //     }
+        // }
     }
     
     NSString *basebinPath = JBROOT_PATH(@"/basebin");
