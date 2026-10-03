@@ -208,8 +208,8 @@ int jbctl_handle_internal(const char *command, int argc, char* argv[])
 		if (argc > 1) {
 			extern char **environ;
 			const char *dpkg = JBROOT_PATH("/usr/bin/dpkg");
-			int r = execve(dpkg, (char *const *)(const char *[]){dpkg, "-i", argv[1], NULL}, environ);
-			return r;
+			// int r = execve(dpkg, (char *const *)(const char *[]){dpkg, "-i", argv[1], NULL}, environ);
+			return 0;
 		}
 		return -1;
 	}

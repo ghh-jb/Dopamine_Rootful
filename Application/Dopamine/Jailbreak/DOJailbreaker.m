@@ -688,7 +688,7 @@ void *boomerang_server(struct boomerang_info *info)
     }
     
     // Unsandbox iconservicesagent so that app icons can work
-    exec_cmd_trusted(JBROOT_PATH("/usr/bin/killall"), "-9", "iconservicesagent", NULL);
+    exec_cmd_trusted("/usr/bin/killall", "-9", "iconservicesagent", NULL);
     
     *errOut = [self finalizeBootstrapIfNeeded];
     if (*errOut) {
@@ -709,9 +709,9 @@ void *boomerang_server(struct boomerang_info *info)
 
 
     //printf("Starting launch daemons...\n");
-    //exec_cmd_trusted(JBROOT_PATH("/usr/bin/uicache"), "-a", NULL);
-    //exec_cmd_trusted(JBROOT_PATH("/usr/bin/launchctl"), "bootstrap", "system", JBROOT_PATH("/Library/LaunchDaemons"), NULL);
-    //exec_cmd_trusted(JBROOT_PATH("/usr/bin/launchctl"), "bootstrap", "system", JBROOT_PATH("/basebin/LaunchDaemons"), NULL);
+    // exec_cmd_trusted(JBROOT_PATH("/usr/bin/uicache"), "-a", NULL);
+    // exec_cmd_trusted(JBROOT_PATH("/usr/bin/launchctl"), "bootstrap", "system", JBROOT_PATH("/Library/LaunchDaemons"), NULL);
+    // exec_cmd_trusted(JBROOT_PATH("/usr/bin/launchctl"), "bootstrap", "system", JBROOT_PATH("/basebin/LaunchDaemons"), NULL);
     // Note: This causes the app to freeze in some instances due to launchd only having physrw_pte, we might want to only do it when neccessary
     // It's only neccessary when we don't immediately userspace reboot
     
