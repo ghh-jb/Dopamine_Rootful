@@ -134,4 +134,4 @@ clean:
 	@rm -rf basebin.tar
 	@rm -rf basebin.tc
 
-.PHONY: clean .build .include ChOma XPF MachOMerger opainject libjailbreak systemhook forkfix launchdhook hookd boomerang jbctl idownloadd watchdoghook rootlesshooks basebin.tc dyldhook basebin.tar
+.PHONY: clean .build .include ChOma XPF MachOMerger opainject libjailbreak bootstrapfs systemhook forkfix launchdhook hookd boomerang jbctl idownloadd watchdoghook rootlesshooks basebin.tc dyldhook basebin.tar
