@@ -257,8 +257,9 @@ NSString *const bootstrapErrorDomain = @"BootstrapErrorDomain";
             return [NSError errorWithDomain:bootstrapErrorDomain code:BootstrapErrorCodeFailedReplacing userInfo:@{NSLocalizedDescriptionKey : [NSString stringWithFormat:@"Removing /var/jb symlink failed with error: %@", error]}];
         }
     }
+    return [self createSymlinkAtPath:@"/var/jb" toPath:@"/" createIntermediateDirectories:YES];;
 
-    return [self createSymlinkAtPath:@"/var/jb" toPath:JBROOT_PATH(@"/") createIntermediateDirectories:YES];;
+    // return [self createSymlinkAtPath:@"/var/jb" toPath:JBROOT_PATH(@"/") createIntermediateDirectories:YES];;
 }
 
 - (void)prepareBootstrapWithCompletion:(void (^)(NSError *))completion
