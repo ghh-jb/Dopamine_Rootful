@@ -142,10 +142,11 @@ int main(int argc, char* argv[])
 		}
 	}
 	else if (!strcmp(cmd, "reboot_userspace")) {
-		return reboot3(RB2_USERREBOOT);
+		// return reboot3(RB2_USERREBOOT);
+		return 0;
 	}
 	else if (!strcmp(cmd, "respring")) {
-		const char *sbreloadPath = JBROOT_PATH("/usr/bin/sbreload");
+		const char *sbreloadPath = "/usr/bin/sbreload";
 		if (execve(sbreloadPath, (char *[]){ (char *)sbreloadPath, NULL }, environ) != 0) {
 			killall("/usr/libexec/backboardd", SIGTERM);
 		}
