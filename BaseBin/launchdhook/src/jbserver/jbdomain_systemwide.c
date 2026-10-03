@@ -112,13 +112,13 @@ int systemwide_trust_file(audit_token_t *processToken, int rfd, struct siginfo *
 
 	struct statfs fsb;
 	int fsr = fstatfs(fd, &fsb);
-	if (fsr == 0) {
+	// if (fsr == 0) {
 		// Anything on the rootfs or fakelib mount point can be ignored as it's guaranteed to already be in trustcache
 		// if (!strcmp(fsb.f_mntonname, "/") || !strcmp(fsb.f_mntonname, "/usr/lib")) {
 		// 	close(fd);
 		// 	return 0;
 		// }
-	}
+	// }
 
 	struct siginfo *sigInfos = NULL;
 	uint32_t sigInfoCount = 0;
