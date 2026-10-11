@@ -13,3 +13,4 @@ Tools/fastPathSign/.build_*
 Exploits/kfd/kfd.framework/kfd
 .sign
 dyld
+dyld.bndb
