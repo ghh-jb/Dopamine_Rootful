@@ -64,16 +64,16 @@ In order to install Sileo and your preferred tweak injector (libhooker and ElleK
 Note: libkrw will not work in this case, build it from source if you need its features<br>
 To begin using dpkg/apt normally create deb packages with these names in "Package: " field. Here is example:
 
-`
-Package: firmware
-Name: system_fixes
-Description: Compat package for Dopamine_Rootful jailbreak
-Maintainer: ghh-jb
-Author: ghh-jb
-Section: System
-Architecture: iphoneos-arm
-Version: 15.2
-`
+```
+Package: firmware<br>
+Name: system_fixes<br>
+Description: Compat package for Dopamine_Rootful jailbreak<br>
+Maintainer: ghh-jb<br>
+Author: ghh-jb<br>
+Section: System<br>
+Architecture: iphoneos-arm<br>
+Version: 15.2<br>
+```
 
 Read about how to construct debian package `control` file at https://www.debian.org/doc/debian-policy/ch-controlfields.html<br>
 I recommend extractng some other package and modifying its control file.
